@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
     String lang;
 
     TessBaseAPI tessBaseApi;
-
+    GaussaKrugera gaussaKrugera;
     Convertor convertor;
     WGS84 wgs84;
     PZ90 pz90;
@@ -167,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
         convertor = new Convertor();
         wgs84 = new WGS84(0, 0, 0);
         pz90 = new PZ90();
+        gaussaKrugera = new GaussaKrugera();
 
         if (!Settings.canDrawOverlays(this)) {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName()));
@@ -864,10 +865,14 @@ public class MainActivity extends AppCompatActivity {
 
                         wgs84.longt = N;
                         wgs84.latt = E;
-                        wgs84 = convertor.WGS84ToWGS84_XYZ(wgs84);
-                        pz90 = convertor.WGS84toPZ90(wgs84);
 
-                        extractedText = "X: " + pz90.X_PZ90 + " Y: " + pz90.Y_PZ90;
+                        gaussaKrugera.calcCoordinate(N, E);
+
+//                        wgs84 = convertor.WGS84ToWGS84_XYZ(wgs84);
+//                        pz90 = convertor.WGS84toPZ90(wgs84);
+
+                        extractedText = "X: " + gaussaKrugera.getX() + "\nY: " + gaussaKrugera.getY();
+//                        extractedText = "X: " + pz90.X_PZ90 + " Y: " + pz90.Y_PZ90;
                     }
                     catch (Exception e)
                     {
